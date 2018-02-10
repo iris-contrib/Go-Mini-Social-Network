@@ -99,7 +99,9 @@ func ChangeAvatar(ctx iris.Context) {
 	dErr := os.Remove(dest)
 	CO.Err(dErr)
 
-	_, upErr := ctx.UploadFormFile("avatar", dest)
+	// avatar key of post form file, but let's grab all of them,
+	// the `ctx.FormFile` can be used to manually upload files per post key to the server.
+	_, upErr := ctx.UploadFormFiles(dest)
 
 	if upErr != nil {
 		resp["mssg"] = "An error occured!!"
