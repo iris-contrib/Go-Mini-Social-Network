@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/badoux/checkmail"
-	"github.com/kataras/iris"
+	"github.com/kataras/iris/v12"
 	"golang.org/x/crypto/bcrypt"
 )
 

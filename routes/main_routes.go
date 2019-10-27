@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/kataras/iris"
+	"github.com/kataras/iris/v12"
 )
 
 // Index route

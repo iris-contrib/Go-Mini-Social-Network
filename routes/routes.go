@@ -3,7 +3,7 @@ package routes
 import (
 	CO "Iris-Mini-Social-Network/config"
 
-	"github.com/kataras/iris"
+	"github.com/kataras/iris/v12"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -4,8 +4,8 @@ import (
 	R "Iris-Mini-Social-Network/routes"
 	"os"
 
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/middleware/recover"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/middleware/recover"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	app.Use(recover.New())
 
 	app.RegisterView(iris.HTML("./views", ".html"))
-	app.StaticWeb("/", "./public")
+	app.HandleDir("/", "./public")
 
 	user := app.Party("/user")
 	{
