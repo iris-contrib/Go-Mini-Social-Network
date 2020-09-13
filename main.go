@@ -10,10 +10,10 @@ import (
 
 func main() {
 	app := iris.New()
-	app.Use(recover.New())
+	app.UseRouter(recover.New())
 
 	app.RegisterView(iris.HTML("./views", ".html"))
-	app.HandleDir("/", "./public")
+	app.HandleDir("/", iris.Dir("./public"))
 
 	user := app.Party("/user")
 	{
@@ -64,5 +64,14 @@ func main() {
 		api.Post("/deactivate-account", R.DeactivateAcc)
 	}
 
-	app.Run(iris.Addr(os.Getenv("PORT")))
+	addr := ":8080"
+	if port := os.Getenv("PORT"); port != "" {
+		if port[0] != ':' {
+			port = ":" + port
+		}
+
+		addr = port
+	}
+
+	app.Listen(addr)
 }

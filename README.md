@@ -6,11 +6,13 @@ This is a fork of: https://github.com/yTakkar/Go-Mini-Social-Network.
 Created by [@kataras](https://twitter.com/MakisMaropoulos) as an example on converting a web app from gin to iris. The structure is the same as the original repository, nothing changed in order to be easier to watch the changes between them.
 
 # Quick Links
+
 1. [Screenshots](#screenshots)
 2. [Requirements](#requirements)
 3. [Usage](#usage)
 
 # Screenshots
+
 ![alt text](https://raw.githubusercontent.com/iris-contrib/Iris-Mini-Social-Network/master/screenshots/Snap%202017-09-26%20at%2001.11.55.png)
 ![alt text](https://raw.githubusercontent.com/iris-contrib/Iris-Mini-Social-Network/master/screenshots/Snap%202017-09-26%20at%2001.12.18.png)
 ![alt text](https://raw.githubusercontent.com/iris-contrib/Iris-Mini-Social-Network/master/screenshots/Snap%202017-09-26%20at%2013.11.39.png)
@@ -20,9 +22,10 @@ Created by [@kataras](https://twitter.com/MakisMaropoulos) as an example on conv
 ![alt text](https://raw.githubusercontent.com/iris-contrib/Iris-Mini-Social-Network/master/screenshots/Snap%202017-09-26%20at%2001.13.29.png)
 
 # Requirements
-1. Make sure you keep this project inside `src/` of your Golang project folder ($GOPATH).
+
+1. Make sure you have installed [Go](https://golang.org) and [Iris](https://github.com/kataras/iris).
 2. Following packages should be installed.
-    1. [iris](https://github.com/kataras/iris)
+    1. [Iris](https://github.com/kataras/iris)
     2. [checkmail](https://github.com/badoux/checkmail)
     3. [MySQL driver](https://github.com/go-sql-driver/mysql)
     4. [bcrypt](https://golang.org/x/crypto/bcrypt)
@@ -31,9 +34,10 @@ Created by [@kataras](https://twitter.com/MakisMaropoulos) as an example on conv
 
 # Usage
 
-1. Open PHPMyAdmin or any other db tool, create a db & import `db.sql`.
+1. Create a MySQL database & import the `db.sql` file.
 
-2. Install all the dependencies.
+2. Install all the dependencies:
+
 ```bash
 # with npm
 npm install
@@ -42,7 +46,7 @@ npm install
 yarn
 ```
 
-3. Create a `.env` file & insert the following code. Replace values with yours!!
+3. Create a `.env` file & insert the following code. Replace values with yours!
 ```javascript
 PORT=YOUR PORT [STRING]
 SESSION_HASH_SECRET=SESSION_HASH_KEY [STRING]

@@ -24,11 +24,11 @@ func CreateNewPost(ctx iris.Context) {
 
 	insertID, _ := rs.LastInsertId()
 
-	resp := map[string]interface{}{
+	resp := iris.Map{
 		"postID": insertID,
 		"mssg":   "Post Created!!",
 	}
-	json(ctx, resp)
+	ctx.JSON(resp)
 }
 
 // DeletePost route
@@ -39,7 +39,7 @@ func DeletePost(ctx iris.Context) {
 	_, dErr := db.Exec("DELETE FROM posts WHERE postID=?", post)
 	CO.Err(dErr)
 
-	json(ctx, map[string]interface{}{
+	ctx.JSON(iris.Map{
 		"mssg": "Post Deleted!!",
 	})
 }
@@ -53,14 +53,14 @@ func UpdatePost(ctx iris.Context) {
 	db := CO.DB()
 	db.Exec("UPDATE posts SET title=?, content=? WHERE postID=?", title, content, postID)
 
-	json(ctx, map[string]interface{}{
+	ctx.JSON(iris.Map{
 		"mssg": "Post Updated!!",
 	})
 }
 
 // UpdateProfile route
 func UpdateProfile(ctx iris.Context) {
-	resp := make(map[string]interface{})
+	resp := make(iris.Map)
 
 	id, _ := CO.AllSessions(ctx)
 	username := ctx.PostValueTrim("username")
@@ -85,12 +85,12 @@ func UpdateProfile(ctx iris.Context) {
 		resp["success"] = true
 	}
 
-	json(ctx, resp)
+	ctx.JSON(resp)
 }
 
 // ChangeAvatar route
 func ChangeAvatar(ctx iris.Context) {
-	resp := make(map[string]interface{})
+	resp := make(iris.Map)
 	id, _ := CO.AllSessions(ctx)
 
 	dir, _ := os.Getwd()
@@ -101,7 +101,7 @@ func ChangeAvatar(ctx iris.Context) {
 
 	// avatar key of post form file, but let's grab all of them,
 	// the `ctx.FormFile` can be used to manually upload files per post key to the server.
-	_, upErr := ctx.UploadFormFiles(dest)
+	_, _, upErr := ctx.UploadFormFiles(dest)
 
 	if upErr != nil {
 		resp["mssg"] = "An error occured!!"
@@ -110,7 +110,7 @@ func ChangeAvatar(ctx iris.Context) {
 		resp["success"] = true
 	}
 
-	json(ctx, resp)
+	ctx.JSON(resp)
 }
 
 // Follow route
@@ -124,7 +124,7 @@ func Follow(ctx iris.Context) {
 	_, exErr := stmt.Exec(id, user, time.Now())
 	CO.Err(exErr)
 
-	json(ctx, iris.Map{
+	ctx.JSON(iris.Map{
 		"mssg": "Followed " + username + "!!",
 	})
 }
@@ -140,7 +140,7 @@ func Unfollow(ctx iris.Context) {
 	_, dErr := stmt.Exec(id, user)
 	CO.Err(dErr)
 
-	json(ctx, iris.Map{
+	ctx.JSON(iris.Map{
 		"mssg": "Unfollowed " + username + "!!",
 	})
 }
@@ -155,7 +155,7 @@ func Like(ctx iris.Context) {
 	_, err := stmt.Exec(post, id, time.Now())
 	CO.Err(err)
 
-	json(ctx, iris.Map{
+	ctx.JSON(iris.Map{
 		"mssg": "Post Liked!!",
 	})
 }
@@ -170,7 +170,7 @@ func Unlike(ctx iris.Context) {
 	_, err := stmt.Exec(post, id)
 	CO.Err(err)
 
-	json(ctx, iris.Map{
+	ctx.JSON(iris.Map{
 		"mssg": "Post Unliked!!",
 	})
 }
@@ -208,7 +208,7 @@ func DeactivateAcc(ctx iris.Context) {
 	// or
 	session.Destroy()
 
-	json(ctx, iris.Map{
+	ctx.JSON(iris.Map{
 		"mssg": "Deactivated your account!!",
 	})
 }

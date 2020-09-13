@@ -29,7 +29,7 @@ func Index(ctx iris.Context) {
 
 	for rows.Next() {
 		rows.Scan(&postID, &title, &content, &createdBy, &createdAt)
-		feed := map[string]interface{}{
+		feed := iris.Map{
 			"postID":    postID,
 			"title":     title,
 			"content":   content,
@@ -39,7 +39,7 @@ func Index(ctx iris.Context) {
 		feeds = append(feeds, feed)
 	}
 
-	renderTemplate(ctx, "index", iris.Map{
+	ctx.View("index.html", iris.Map{
 		"title":   "Home",
 		"session": ses(ctx),
 		"posts":   feeds,
@@ -50,14 +50,14 @@ func Index(ctx iris.Context) {
 // Welcome route
 func Welcome(ctx iris.Context) {
 	notLoggedIn(ctx)
-	renderTemplate(ctx, "welcome", iris.Map{
+	ctx.View("welcome.html", iris.Map{
 		"title": "Welcome",
 	})
 }
 
 // NotFound route
 func NotFound(ctx iris.Context) {
-	renderTemplate(ctx, "404", iris.Map{
+	ctx.View("404.html", iris.Map{
 		"title":   "Oops!! Error",
 		"session": ses(ctx),
 	})
@@ -125,7 +125,7 @@ func Profile(ctx iris.Context) {
 
 	for rows.Next() {
 		rows.Scan(&postID, &title, &content, &createdBy, &createdAt)
-		post := map[string]interface{}{
+		post := iris.Map{
 			"postID":    postID,
 			"title":     title,
 			"content":   content,
@@ -139,7 +139,7 @@ func Profile(ctx iris.Context) {
 	db.QueryRow("SELECT COUNT(followID) AS followers FROM follow WHERE followBy=?", user).Scan(&followings) // FOLLOWINGS
 	db.QueryRow("SELECT COUNT(viewID) AS pViews FROM profile_views WHERE viewTo=?", user).Scan(&pViews)     // PROFILE VIEWS
 
-	renderTemplate(ctx, "profile", iris.Map{
+	ctx.View("profile.html", iris.Map{
 		"title":   "@" + username,
 		"session": ses(ctx),
 		"user": iris.Map{
@@ -177,7 +177,7 @@ func Explore(ctx iris.Context) {
 
 	for rows.Next() {
 		rows.Scan(&id, &username, &email)
-		exp := map[string]interface{}{
+		exp := iris.Map{
 			"id":       id,
 			"username": username,
 			"email":    email,
@@ -185,7 +185,7 @@ func Explore(ctx iris.Context) {
 		explore = append(explore, exp)
 	}
 
-	renderTemplate(ctx, "explore", iris.Map{
+	ctx.View("explore.html", iris.Map{
 		"title":   "Explore",
 		"session": ses(ctx),
 		"users":   explore,
@@ -198,7 +198,7 @@ func Explore(ctx iris.Context) {
 // CreatePost route
 func CreatePost(ctx iris.Context) {
 	loggedIn(ctx, "")
-	renderTemplate(ctx, "create_post", iris.Map{
+	ctx.View("create_post.html", iris.Map{
 		"title":   "Create Post",
 		"session": ses(ctx),
 	})
@@ -227,7 +227,7 @@ func ViewPost(ctx iris.Context) {
 	// likes
 	db.QueryRow("SELECT COUNT(likeID) AS likesCount FROM likes WHERE postID=?", param).Scan(&likesCount)
 
-	renderTemplate(ctx, "view_post", iris.Map{
+	ctx.View("view_post.html", iris.Map{
 		"title":   "View Post",
 		"session": ses(ctx),
 		"post": iris.Map{
@@ -259,7 +259,7 @@ func EditPost(ctx iris.Context) {
 	db.QueryRow("SELECT COUNT(postID) AS postCount, postID, title, content FROM posts WHERE postID=?", post).Scan(&postCount, &postID, &title, &content)
 	invalid(ctx, postCount)
 
-	renderTemplate(ctx, "edit_post", iris.Map{
+	ctx.View("edit_post.html", iris.Map{
 		"title":   "Edit Post",
 		"session": ses(ctx),
 		"post": iris.Map{
@@ -282,7 +282,7 @@ func EditProfile(ctx iris.Context) {
 		joined string
 	)
 	db.QueryRow("SELECT email, bio, joined FROM users WHERE id=?", id).Scan(&email, &bio, &joined)
-	renderTemplate(ctx, "edit_profile", iris.Map{
+	ctx.View("edit_profile.html", iris.Map{
 		"title":   "Edit Profile",
 		"session": ses(ctx),
 		"email":   email,
@@ -309,7 +309,7 @@ func Followers(ctx iris.Context) {
 
 	for rows.Next() {
 		rows.Scan(&followBy)
-		f := map[string]interface{}{
+		f := iris.Map{
 			"followBy": followBy,
 		}
 		followers = append(followers, f)
@@ -321,7 +321,7 @@ func Followers(ctx iris.Context) {
 		noMssg = username
 	}
 
-	renderTemplate(ctx, "followers", iris.Map{
+	ctx.View("followers.html", iris.Map{
 		"title":     username + "'s Followers",
 		"session":   ses(ctx),
 		"followers": followers,
@@ -350,7 +350,7 @@ func Followings(ctx iris.Context) {
 
 	for rows.Next() {
 		rows.Scan(&followTo)
-		f := map[string]interface{}{
+		f := iris.Map{
 			"followTo": followTo,
 		}
 		followings = append(followings, f)
@@ -362,7 +362,7 @@ func Followings(ctx iris.Context) {
 		noMssg = username
 	}
 
-	renderTemplate(ctx, "followings", iris.Map{
+	ctx.View("followings.html", iris.Map{
 		"title":      username + "'s Followings",
 		"session":    ses(ctx),
 		"followings": followings,
@@ -392,13 +392,13 @@ func Likes(ctx iris.Context) {
 
 	for rows.Next() {
 		rows.Scan(&likeBy)
-		l := map[string]interface{}{
+		l := iris.Map{
 			"likeBy": likeBy,
 		}
 		likes = append(likes, l)
 	}
 
-	renderTemplate(ctx, "likes", iris.Map{
+	ctx.View("likes.html", iris.Map{
 		"title":   "Likes",
 		"session": ses(ctx),
 		"likes":   likes,
@@ -410,7 +410,7 @@ func Likes(ctx iris.Context) {
 
 // Deactivate route
 func Deactivate(ctx iris.Context) {
-	renderTemplate(ctx, "deactivate", iris.Map{
+	ctx.View("deactivate.html", iris.Map{
 		"title":   "Deactivate your acount",
 		"session": ses(ctx),
 	})

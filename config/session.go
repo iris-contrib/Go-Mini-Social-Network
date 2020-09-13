@@ -22,9 +22,8 @@ func init() {
 	var secureCookie = securecookie.New(hashKey, blockKey)
 
 	manager = sessions.New(sessions.Config{
-		Cookie: "session_id",
-		Encode: secureCookie.Encode,
-		Decode: secureCookie.Decode,
+		Cookie:   "session_id",
+		Encoding: secureCookie,
 	})
 
 	// println("hashKey = " + string(hashKey))

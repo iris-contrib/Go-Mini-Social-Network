@@ -14,7 +14,7 @@ import (
 // Signup route
 func Signup(ctx iris.Context) {
 	notLoggedIn(ctx)
-	renderTemplate(ctx, "signup", iris.Map{
+	ctx.View("signup.html", iris.Map{
 		"title": "Signup For Free",
 	})
 }
@@ -22,7 +22,7 @@ func Signup(ctx iris.Context) {
 // Login route
 func Login(ctx iris.Context) {
 	notLoggedIn(ctx)
-	renderTemplate(ctx, "login", iris.Map{
+	ctx.View("login.html", iris.Map{
 		"title": "Login To Continue",
 	})
 }
@@ -41,7 +41,7 @@ func Logout(ctx iris.Context) {
 
 // UserSignup function to register user
 func UserSignup(ctx iris.Context) {
-	resp := make(map[string]interface{})
+	resp := make(iris.Map)
 
 	username := ctx.PostValueTrim("username")
 	email := ctx.PostValueTrim("email")
@@ -97,12 +97,12 @@ func UserSignup(ctx iris.Context) {
 		resp["mssg"] = "Hello, " + username + "!!"
 
 	}
-	json(ctx, resp)
+	ctx.JSON(resp)
 }
 
 // UserLogin function to log user in
 func UserLogin(ctx iris.Context) {
-	resp := make(map[string]interface{})
+	resp := make(iris.Map)
 
 	rusername := ctx.PostValueTrim("username")
 	rpassword := ctx.PostValueTrim("password")
@@ -133,5 +133,5 @@ func UserLogin(ctx iris.Context) {
 		resp["mssg"] = "Hello, " + username + "!!"
 		resp["success"] = true
 	}
-	json(ctx, resp)
+	ctx.JSON(resp)
 }

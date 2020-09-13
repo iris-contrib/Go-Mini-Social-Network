@@ -13,19 +13,9 @@ func hash(password string) []byte {
 	return hash
 }
 
-func renderTemplate(ctx iris.Context, tmpl string, p interface{}) {
-	ctx.StatusCode(iris.StatusOK)
-	ctx.View(tmpl+".html", p)
-}
-
-func json(ctx iris.Context, data interface{}) {
-	ctx.StatusCode(iris.StatusOK)
-	ctx.JSON(data)
-}
-
 func ses(ctx iris.Context) interface{} {
 	id, username := CO.AllSessions(ctx)
-	return map[string]interface{}{
+	return iris.Map{
 		"id":       id,
 		"username": username,
 	}
