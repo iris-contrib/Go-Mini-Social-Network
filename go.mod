@@ -7,6 +7,6 @@ require (
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gorilla/securecookie v1.1.1
 	github.com/joho/godotenv v1.3.0
-	github.com/kataras/iris/v12 v12.2.0-alpha
+	github.com/kataras/iris/v12 v12.2.0-alpha2
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
 )
